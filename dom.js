@@ -3,7 +3,7 @@ window.dom = {
     create(string) {
         let container = document.createElement('template')
         container.innerHTML = string.trim()
-        return container.content.childNodes[0]
+        return container.content.firstcChild
     },
 
     after(node, afterNode) {
@@ -20,7 +20,7 @@ window.dom = {
 
     wrap(node, parentString) {
         let newParent = dom.create(parentString)
-        dom.after(node, newParent)
+        dom.before(node, newParent)
         dom.append(newParent, node)
     },
 
@@ -30,7 +30,6 @@ window.dom = {
     },
 
     empty(node) {
-        let length = node.childNodes.length
         let array = []
         //  node.childNodes 会因为节点的变化而随时改变 
         while (node.childNodes.length !== 0) {
@@ -71,9 +70,19 @@ window.dom = {
         }
     },
 
-    style(node, style) {
-        for (key in style) {
-            node.style[key] = style[key]
+    style(node, styleKey, value) {
+        if (arguments.length === 3) {
+            node.style[styleKey] = value
+        } else if (arguments.length === 2) {
+            if (typeof styleKey === 'string') {
+                // style(node,'color:red')
+                // node.style = (node.getAttribute('style') + styleKey)
+                return node.style[styleKey]
+            } else if (styleKey instanceof Object) {
+                for (key in styleKey) {
+                    node.style[key] = styleKey[key]
+                }
+            }
         }
     },
 
@@ -83,6 +92,9 @@ window.dom = {
         },
         remove(node, className) {
             node.classList.remove(className)
+        },
+        has(node, className) {
+            return node.classList.contains(className)
         }
     },
 
@@ -103,7 +115,7 @@ window.dom = {
     },
 
     children(node) {
-        return node.childNodes
+        return node.children
     },
 
     siblings(node) {

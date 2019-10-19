@@ -48,7 +48,9 @@
 
 // test style
 {
-    // dom.style(test3, { 'color': 'red', 'fontSize': '20px' })
+    dom.style(test3, { 'color': 'red', 'fontSize': '20px' })
+    console.log(dom.style(test3, 'color'))
+    dom.style(test2, 'border', '1px solid green')
 }
 
 //test class add remove
